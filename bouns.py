@@ -1,5 +1,5 @@
 weather= {}
-def input_weather_data():
+def input_weather():
     city = input("Enter city name: ")
     date = input("Enter date (YYYY-MM-DD): ")
     temperature = input("Enter temperature (°C): ")
@@ -54,7 +54,6 @@ def delete_weather():
     
 def main():
     while True:
-        print("\nWeather Data Program")
         print("1. Input Weather Data")
         print("2. Query Weather Data by City")
         print("3. Update Weather Data")
@@ -62,7 +61,7 @@ def main():
         choice = input("Select an option (1-4): ")
 
         if choice == '1':
-            input_weather_data()
+            input_weather()
         elif choice == '2':
             query_weather()
         elif choice == '3':

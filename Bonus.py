@@ -1,7 +1,8 @@
 #Function for storing data into dictionary 
-def weatherDictAdd(weatherInfo: dict):
+def weatherDictAdd():
     '''
-    This function prompt user to enter city weather data as args and stores it in nested dictionariesa after validating the info
+    This function prompts the user to enter weather details of a city then stores it in a nested dictionary 
+    after validating the info
     '''
     while True:
         city: str = input("Enter the city's name: ")
@@ -13,62 +14,74 @@ def weatherDictAdd(weatherInfo: dict):
         errorMessage: str = dataValidation(city, date, temprature, humidity, weatherCondition)
         #If the dataValidation function returned an empty string it means there was no error
         if errorMessage == " ":
-            if city not in weatherInfo:
-                weatherInfo[city] = {"date": date, "temprature": temprature, "humidity": humidity, "condition": weatherCondition}
+            #Check that the city doesn't exist first
+            if city not in weatherData:
+                weatherData[city] = {"date": date, "temprature": temprature, "humidity": humidity, "condition": weatherCondition}
                 moreEntryChoice: str = input("Do you want to add another city? (yes/no) ")
                 if moreEntryChoice == "yes":
                     continue
                 else:
-                    return weatherInfo
+                    break
             else:
                 print("City already exists")
         else: 
             print(errorMessage)
 
-#Update existing city info
-def weatherDictUpdateDelete(weatherInfo: dict):
+#Update/ Delete existing city info
+def weatherDictUpdateDelete():
     '''
-    This function updates the info of an existing city if it's found 
+    This function updates or deletes the information of an existing city if it's found 
     '''
-    choice: str = input("Enter 'update' to update a city, and 'delete' to delete it: ")
-    if choice == "update":
-        city: str = input("Enter the name of the city: ")
-        if city not in weatherInfo:
-            print("City info doesn't exist")
-        else:    
-            date: str = input("Enter the new date value (dd-mm-yyyy) : ")
-            temprature: str = input("Enter the new temprature value (C): ")
-            humidity: str = input("Enter the new humidity value (%): ")
-            weatherCondition: str = input("Enter the new weather condition: ")
-            errorMessage: str = dataValidation(city, date, temprature, humidity, weatherCondition)
-            if errorMessage == " ":
-                weatherInfo [city]["date"] = date
-                weatherInfo [city]["temprature"] = temprature
-                weatherInfo [city]["humidity"] = humidity
-                weatherInfo [city]["condition"] = weatherCondition
-            else:
-                print(errorMessage)
-    elif choice == "delete": 
-        city: str = input("Enter the name of the city: ")
-        if city not in weatherInfo:
-            print("City info doesn't exist.")
+    #Keep prompting the user to enter a choice until they provide a valid choice
+    while True:
+        choice: str = input("Enter 'update' to update a city, and 'delete' to delete it: ")
+        #Start of update operation
+        if choice == "update":
+            city: str = input("Enter the name of the city: ")
+            #Make sure the city exists before performing the operation
+            if city not in weatherData:
+                print("City info doesn't exist")
+                break
+            else:    
+                date: str = input("Enter the new date value (dd-mm-yyyy) : ")
+                temprature: str = input("Enter the new temprature value (C): ")
+                humidity: str = input("Enter the new humidity value (%): ")
+                weatherCondition: str = input("Enter the new weather condition: ")
+                errorMessage: str = dataValidation(city, date, temprature, humidity, weatherCondition)
+                if errorMessage == " ":
+                    weatherData [city]["date"] = date
+                    weatherData [city]["temprature"] = temprature
+                    weatherData [city]["humidity"] = humidity
+                    weatherData [city]["condition"] = weatherCondition
+                    break
+                else:
+                    print(errorMessage)
+                    break
+        elif choice == "delete": 
+            city: str = input("Enter the name of the city: ")
+            if city not in weatherData:
+                print("City info doesn't exist.")
+                break
+            else: 
+                del weatherData[city]
+                print("City had been deleted successfully.")
+                break
         else: 
-            del weatherInfo[city]
-            print("City had been deleted successfully.")
+            print("Invalid choice, try again.")
        
 #Searching for a specific city and retreiving its info
-def displayCity(weatherInfo : dict):
+def displayCity():
     '''
-    This function takes the name of the city the user wants to find and the weather information dictionary as Args
+    This function finds if information of a city of the user's choice is in weatherData dict
     and prints the information of that city if it exists
     '''
     city: str = input("Enter the name of the city you want to display: ")
-    if city in weatherInfo:
+    if city in weatherData:
         print(f"City name: {city}.")
-        print(f"Date: {weatherInfo[city]["date"]}")
-        print(f"Temprature: {weatherInfo[city]["temprature"]} degrees.")
-        print(f"Humidity: {weatherInfo[city]["humidity"]}% .")
-        print(f"Weather condition: {weatherInfo[city]["condition"]}.")
+        print(f"Date: {weatherData[city]["date"]}")
+        print(f"Temprature: {weatherData[city]["temprature"]} degrees.")
+        print(f"Humidity: {weatherData[city]["humidity"]}% .")
+        print(f"Weather condition: {weatherData[city]["condition"]}.")
     else:
         print("City info doesn't exist")
 
@@ -99,19 +112,20 @@ while True:
     choice: str = input(" 1. Add new city.\n 2. Display a city's info.\n 3. Update/ Delete existing city\n 4. Exit\n Please choose your query: ")
     #Calling functions based on user choice
     if choice == "1":
-        #Store the created dictionary in the empty dictionary variable
-        weatherData = weatherDictAdd(weatherData)
+        #Call function  to perform adding items operation
+        weatherDictAdd()
         input("")
     elif choice == "2":
         #Find city by name then display it
-        displayCity(weatherData)
+        displayCity()
         input("")
     elif choice == "3":
-        weatherDictUpdateDelete(weatherData)
+        #Update/ Delete a city in the dictionary
+        weatherDictUpdateDelete()
         input("")
     elif choice == "4":
+        #Exit program
         print("Program ended")
         break
     else:
         print("Invalid choice, try again.")
-        continue

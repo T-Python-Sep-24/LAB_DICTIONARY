@@ -93,22 +93,22 @@ def dataValidation(city: str, date: str, temprature: str, humidity: str, conditi
 weatherData: dict = {}
 
 #Main program
+print("---Welcome to Weather Data---")
 while True:
-    print("---Welcome to Weather Data---")
     #Make user choose the query
     choice: str = input(" 1. Add new city.\n 2. Display a city's info.\n 3. Update/ Delete existing city\n 4. Exit\n Please choose your query: ")
     #Calling functions based on user choice
     if choice == "1":
         #Store the created dictionary in the empty dictionary variable
         weatherData = weatherDictAdd(weatherData)
-        continue
+        input("")
     elif choice == "2":
         #Find city by name then display it
         displayCity(weatherData)
-        continue
+        input("")
     elif choice == "3":
         weatherDictUpdateDelete(weatherData)
-        continue
+        input("")
     elif choice == "4":
         print("Program ended")
         break
